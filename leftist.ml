@@ -4,11 +4,16 @@
 (*          RIWJU: MAJA TKACZYK           *)
 (******************************************)
 
-type 'a queue = Leaf | Node of 'a queue * 'a queue * 'a * int;;
 exception Empty;;
+type 'a queue = Leaf | Node of 'a queue * 'a queue * 'a * int;;
+(* typ 'a queue przechowuje informacje odpowiednio o lewym poddrzewie, 
+prawym poddrzewie, wartosci priorytetu, dlugosci skrajnie prawej sciezki *)
 
 let merge tree1 tree2 =
+    (* laczenie drzew *)
+
     let swap (tree1, tree2) =
+        (* zamienia kolejnosc drzew, tak aby pierwsze mialo element priorytetowy *)
         match (tree1, tree2) with
         | (Leaf, Leaf) -> (tree1, tree2)
         | (Leaf, _) -> (tree1, tree2)
@@ -21,17 +26,20 @@ let merge tree1 tree2 =
     in
     
     let rec main (tree1, tree2) =
+        (* glowna funkcja zlaczajaca drzewa *)
+    
         match (tree1, tree2) with
         | (Leaf, Leaf) -> Leaf
         | (Leaf, _) -> tree2
         | (_, Leaf) -> tree1
         | (Node (leftChild1, rightChild1, priority1, height1), Node (leftChild2, rightChild2, priority2, height2)) ->
-            let tree3 = main (swap (rightChild1, tree2)) in (* drzewo powstale w wyniku scalenia prawego poddrzewa drzewa 1 z drzewem 2 *)
+            let tree3 = main (swap (rightChild1, tree2)) in 
+            (* drzewo powstale w wyniku scalenia prawego poddrzewa drzewa 1 z drzewem 2 *)
             
             match (leftChild1, tree3) with
             | (Leaf, Node (_, _, _, height3)) -> (Node (tree3, leftChild1, priority1, height3 + 1))
             | (Node (_, _, _, height4), Node (_, _, _, height3)) -> 
-                if height3 < height4 then
+                if height3 < height4 then 
                     (Node (leftChild1, tree3, priority1, height3 + 1))
                 else
                     (Node (tree3, leftChild1, priority1, height4 + 1))
