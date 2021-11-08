@@ -37,7 +37,7 @@ let merge tree1 tree2 =
             (* drzewo powstale w wyniku scalenia prawego poddrzewa drzewa 1 z drzewem 2 *)
             
             match (leftChild1, tree3) with
-            | (Leaf, Node (_, _, _, height3)) -> (Node (tree3, leftChild1, priority1, height3 + 1))
+            | (Leaf, Node (_, _, _, height3)) -> (Node (tree3, leftChild1, priority1, 1))
             | (Node (_, _, _, height4), Node (_, _, _, height3)) -> 
                 if height3 < height4 then 
                     (Node (leftChild1, tree3, priority1, height3 + 1))
