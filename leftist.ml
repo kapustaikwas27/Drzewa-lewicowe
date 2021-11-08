@@ -14,6 +14,7 @@ let merge tree1 tree2 =
 
     let swap (tree1, tree2) =
         (* zamienia kolejnosc drzew, tak aby pierwsze mialo element priorytetowy *)
+        
         match (tree1, tree2) with
         | (Leaf, Leaf) -> (tree1, tree2)
         | (Leaf, _) -> (tree1, tree2)
@@ -63,11 +64,9 @@ let add e q =
 ;;
 
 let delete_min q =
-    if is_empty q then
-        raise Empty
-    else
-        let (Node (leftChild, rightChild, priority, height)) = q in
-        
+    match q with
+    | Leaf -> raise Empty
+    | Node (leftChild, rightChild, priority, height) ->
         (priority, merge leftChild rightChild)
 ;;
 
